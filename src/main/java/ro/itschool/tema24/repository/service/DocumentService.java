@@ -1,59 +1,52 @@
 package ro.itschool.tema24.repository.service;
 
 import org.springframework.stereotype.Service;
+import ro.itschool.tema24.repository.DocumentRepository;
 import ro.itschool.tema24.repository.model.Document;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
 @Service
 public class DocumentService {
-    private final List<Document> documents = new ArrayList<>();
+    private DocumentRepository documentRepository;
 
-    public List<Document> getDocuments(String name, String owner) {
-        return documents.stream()
-                .filter(document -> name == null || document.getName().equals(name))
-                .filter(document -> owner == null || document.getName().equals(owner))
-                .collect(toList());
+    public DocumentService(DocumentRepository documentRepository) {
+        this.documentRepository = documentRepository;
     }
 
-    private List<Document> getByName(String name) {
-        return documents.stream()
-                .filter(document -> document.getName().equals(name))
-                .collect(toList());
+    public List<Document> getDocuments() {
+        return documentRepository.findAll();
     }
+
+//    private List<Document> getByName(String name) {
+//        return documents.stream()
+//                .filter(document -> document.getName().equals(name))
+//                .collect(toList());
+//    }
 
     public Document addDocument(Document document) {
-        documents.add(document);
-        return document;
+        return documentRepository.save(document);
     }
 
-    public Document getDocumentById(String documentId) {
-        return documents.stream()
-                .filter(document -> document.getDocumentId().equals(documentId))
-                .findFirst()
-                .orElse(null);
+    public Optional<Document> getDocumentById(Integer documentId) {
+        return documentRepository.findById(documentId);
     }
 
-    public Document updateDocument(String documentId, Document document) {
-        final Document existingDocument = getDocumentById(documentId);
-        if (existingDocument != null) {
-            documents.remove(existingDocument);
-            documents.add(document);
-            return existingDocument;
-        } else {
-            return null;
+    public Optional<Document> updateDocument(Integer documentId, Document document) {
+        final Optional<Document> existingDocument = getDocumentById(documentId);
+        if (existingDocument.isPresent()) {
+            documentRepository.deleteById(documentId);
+            document.setDocumentId(documentId);
+            documentRepository.save(document);
         }
+        return existingDocument;
     }
 
-    public Document deleteDocument(String documentId) {
-        final Document document = getDocumentById(documentId);
-        if (documents.remove(document)) {
-            return document;
-        } else {
-            return null;
-        }
+    public void deleteDocument(Integer documentId) {
+        documentRepository.deleteById(documentId);
     }
 }

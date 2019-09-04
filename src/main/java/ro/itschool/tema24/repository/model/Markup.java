@@ -11,30 +11,34 @@ import java.util.Objects;
 public class Markup {
     @Id
     @GeneratedValue
-    private String markupId;
-    private String documentId;
+    private Integer markupId;
+    private Integer documentId;
     private String content;
     private int position;
 
-    public Markup(String documentId, String content, int position) {
+    public Markup(){
+
+    }
+
+    public Markup(Integer documentId, String content, int position) {
         this.documentId = documentId;
         this.content = content;
         this.position = position;
     }
 
-    public String getMarkupId() {
+    public Integer getMarkupId() {
         return markupId;
     }
 
-    public void setMarkupId(String markupId) {
+    public void setMarkupId(Integer markupId) {
         this.markupId = markupId;
     }
 
-    public String getDocumentId() {
+    public Integer getDocumentId() {
         return documentId;
     }
 
-    public void setDocumentId(String documentId) {
+    public void setDocumentId(Integer documentId) {
         this.documentId = documentId;
     }
 

@@ -5,6 +5,7 @@ import ro.itschool.tema24.repository.model.Document;
 import ro.itschool.tema24.repository.service.DocumentService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/documents")
@@ -16,8 +17,8 @@ public class DocumentController {
     }
 
     @GetMapping
-    List<Document> getDocuments(@RequestParam(required = false) String name, @RequestParam(required = false) String owner) {
-        return documentService.getDocuments(name, owner);
+    List<Document> getDocuments() {
+        return documentService.getDocuments();
     }
 
     @PostMapping
@@ -26,17 +27,17 @@ public class DocumentController {
     }
 
     @GetMapping("{documentId}")
-    Document getDocumentById(@PathVariable String documentId) {
+    Optional<Document> getDocumentById(@PathVariable Integer documentId) {
         return documentService.getDocumentById(documentId);
     }
 
     @PutMapping("{documentId}")
-    Document updateDocument(@PathVariable String documentId, @RequestBody Document document) {
+    Optional<Document> updateDocument(@PathVariable Integer documentId, @RequestBody Document document) {
         return documentService.updateDocument(documentId, document);
     }
 
     @DeleteMapping("{documentId}")
-    Document deleteDocument(@PathVariable String documentId) {
-        return documentService.deleteDocument(documentId);
+    void deleteDocument(@PathVariable Integer documentId) {
+        documentService.deleteDocument(documentId);
     }
 }

@@ -11,10 +11,14 @@ import java.util.Objects;
 public class Document {
     @Id
     @GeneratedValue
-    private String documentId;
+    private Integer documentId;
     private String name;
     private String content;
     private String owner;
+
+    public Document(){
+
+    }
 
     public Document(String name, String content, String owner) {
         this.name = name;
@@ -22,11 +26,11 @@ public class Document {
         this.owner = owner;
     }
 
-    public String getDocumentId() {
+    public Integer getDocumentId() {
         return documentId;
     }
 
-    public void setDocumentId(String documentId) {
+    public void setDocumentId(Integer documentId) {
         this.documentId = documentId;
     }
 
